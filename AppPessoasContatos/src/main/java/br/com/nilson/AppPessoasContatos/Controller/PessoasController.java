@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controlador responsável pelo gerenciamento de pessoas.
+ */
 @RestController
 @RequestMapping("/api/pessoas")
 @Tag(name = "Pessoa", description = "Gerenciamento de Pessoas")
@@ -23,6 +26,7 @@ public class PessoasController {
     @Autowired
     private PessoasService pessoasService;
 
+    //Cria uma nova pessoa
     @PostMapping
     @Operation(summary = "Cria uma nova Pessoa")
     public ResponseEntity<Pessoas> criarPessoa(@RequestBody PessoaDTO pessoaDTO) {
@@ -39,7 +43,7 @@ public class PessoasController {
         return new ResponseEntity<>(pessoaCriada, HttpStatus.CREATED);
     }
     
-    // Método para buscar pessoa por ID
+    //Busca uma pessoa por ID
     @GetMapping("/{id}")
     @Operation(summary = "Obtém os dados de uma Pessoa por ID")
     public ResponseEntity<Pessoas> obterPessoaPorId(@PathVariable Long id) {
@@ -50,7 +54,7 @@ public class PessoasController {
         return ResponseEntity.ok(pessoa); // Retorna a pessoa com 200 OK
     }
     
-    // Método para buscar pessoa para Mala Direta por ID
+    //Busca uma pessoa para fazer Mala Direta por ID
     @GetMapping("/maladireta/{id}")
     @Operation(summary = "Obtém os dados de uma Pessoa por ID para Mala Direta")
     public ResponseEntity<MalaDiretaDTO> obterMalaDireta(@PathVariable Long id) {
@@ -68,7 +72,7 @@ public class PessoasController {
         return ResponseEntity.ok(malaDiretaDTO); // Retorna a resposta com 200 OK
     }
     
-    // Método para listar todas as pessoas
+    // Retorna todas as pessoas
     @GetMapping
     @Operation(summary = "Lista todas as Pessoas")
     public ResponseEntity<List<Pessoas>> listarTodasPessoas() {
@@ -76,7 +80,7 @@ public class PessoasController {
         return ResponseEntity.ok(pessoas); // Retorna a lista de pessoas com 200 OK
     }
     
-    // Método para atualizar uma pessoa existente
+    // Atualiza os dados de uma pessoa existente
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza uma Pessoa existente por ID")
     @ApiOperation(value = "Atualiza uma pessoa existente")
@@ -114,6 +118,7 @@ public class PessoasController {
         return field != null && !field.isEmpty() && !field.equals("string");
     }
     
+    //Remove uma pessoa por ID
     @DeleteMapping("/{id}")
     @Operation(summary = "Remove uma Pessoa por ID")
     @ApiOperation(value = "Remove uma pessoa por ID")

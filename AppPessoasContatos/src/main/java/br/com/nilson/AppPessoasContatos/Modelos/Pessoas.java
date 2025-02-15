@@ -13,22 +13,39 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+//Classe que representa os dados de uma pessoa, mapeada para a tabela 'tb_pessoas' no banco de dados.
+//Contém informações como nome, endereço, cidade, UF e uma lista de contatos associados.
 @Entity
 @Table(name = "tb_pessoas")
 public class Pessoas {
+	
+	// Atributo que representa o identificador único da entidade
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	// Atributo que define o nome da pessoa, é uma coluna obrigatória na tabela
 	@Column(nullable = false)
 	private String nome;	
+	
+	// Atributo que define o endereço da pessoa
 	private String endereco;
+	
+	// Atributo que define o CEP da pessoa
 	private String cep;
+	
+	// Atributo que define a cidade da pessoa
 	private String cidade;
+	
+	// Atributo que define a unidade federativa (UF) da pessoa
 	private String uf;
+	
+	// Relacionamento OneToMany com a classe Contatos, indicando que uma pessoa pode ter vários contatos
 	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference 
 	private List<Contatos> contatos;
 	
+	// Métodos Getters e Setters para acessar e modificar os atributos
 	public Long getId() {
 		return id;
 	}

@@ -10,24 +10,33 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+//Classe que representa os dados de um contato, mapeada para a tabela 'tb_contatos' no banco de dados.
+//Contém informações como tipo de contato, descrição do contato e a associação com uma pessoa.
 @Entity
 @Table(name = "tb_contatos")
 public class Contatos {
+	
+	// Atributo que representa o identificador único da entidad
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	 
+	
+	// Atributo que define o tipo de contato, é uma coluna obrigatória na tabela
 	@Column(nullable = false)
     private TipoContato tipoContato;
-	 
+
+	 // Atributo que descreve o contato, também obrigatório
 	@Column(nullable = false)
 	private String descContato;
 
+	// Relacionamento ManyToOne com a classe Pessoas, indicando que um contato pertence a uma pessoa
 	@ManyToOne
 	@JoinColumn(name = "pessoa", nullable = true)
-	 @JsonBackReference
+	@JsonBackReference
 	private Pessoas pessoa;
 
+	
+	// Métodos Getters e Setters para acessar e modificar os atributos
 	public Long getId() {
 		return id;
 	}

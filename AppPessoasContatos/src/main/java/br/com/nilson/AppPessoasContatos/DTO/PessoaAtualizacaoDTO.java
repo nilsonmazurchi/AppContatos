@@ -2,25 +2,34 @@ package br.com.nilson.AppPessoasContatos.DTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+/**
+ * DTO (Data Transfer Object) utilizado para a atualização dos dados de uma pessoa.
+ * Permite modificar atributos específicos sem precisar recriar todo o objeto.
+ */
 @Schema(description = "Dados para atualização de uma pessoa")
 public class PessoaAtualizacaoDTO {
 
+	// Atributo que representa o nome da pessoa
 	@Schema(description = "Nome da pessoa", example = "")
     private String nome;
 
+	 // Atributo que representa o endereço da pessoa
 	@Schema(description = "Endereço da pessoa", example = "")
     private String endereco;
 
+	// Atributo que representa o CEP da pessoa
 	@Schema(description = "CEP da pessoa", example = "")
     private String cep;
 
+	// Atributo que representa a cidade da pessoa
 	@Schema(description = "Cidade da pessoa", example = "")
     private String cidade;
 
+	 // Atributo que representa a unidade federativa (UF) da pessoa
 	@Schema(description = "UF da pessoa", example = "")
     private String uf;
 
-    // Getters e Setters
+	// Métodos Getters e Setters para acessar e modificar os atributos
     public String getNome() {
         return nome;
     }

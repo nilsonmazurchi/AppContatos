@@ -16,9 +16,10 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+//Controlador responsável pelo gerenciamento de tipos de contatos.
 @RestController
 @RequestMapping("/api/contatos")
-@Tag(name = "Contato", description = "Gerenciamento de Contatos")
+@Tag(name = "Contato", description = "Gerenciamento de Tipos de Contatos")
 public class ContatosController {
 
     private final ContatosService contatosService;
@@ -28,10 +29,12 @@ public class ContatosController {
         this.contatosService = contatosService;
         this.pessoasService = pessoasService;
     }
-
+    
+    
+    //Adiciona um novo contato a uma pessoa pelo ID.
     @PostMapping("/id")
-    @ApiOperation(value = "Adiciona um novo Contato a uma Pessoa por ID")
-    @Operation(summary = "Adiciona um novo Contato a uma Pessoa por ID")
+    @ApiOperation(value = "Adiciona um novo tipo de contato a uma Pessoa por ID")
+    @Operation(summary = "Adiciona um novo tipo de contato a uma Pessoa por ID")
     public ResponseEntity<?> adicionarContatoPorId(@RequestBody ContatoDTO contatoDTO) {
         // Buscar pessoa pelo ID
         Pessoas pessoa = pessoasService.obterPessoaPorId(contatoDTO.getPessoaId());
@@ -56,10 +59,11 @@ public class ContatosController {
         // Retorna o contato salvo com 200 OK
         return ResponseEntity.ok(contatoSalvo);
     }
-
+    
+    //Adiciona um novo tipo de contato a uma pessoa pelo nome.
     @PostMapping("/nome")
-    @ApiOperation(value = "Adiciona um novo Contato a uma Pessoa por Nome")
-    @Operation(summary = "Adiciona um novo Contato a uma Pessoa por Nome")
+    @ApiOperation(value = "Adiciona um novo tipo de contato a uma Pessoa por Nome")
+    @Operation(summary = "Adiciona um novo tipo de contato a uma Pessoa por Nome")
     public ResponseEntity<?> adicionarContatoPorNome(@RequestBody ContatoDTONome contatoDTONome) {
         // Buscar pessoa pelo Nome
         Pessoas pessoa = pessoasService.obterPessoaPorNome(contatoDTONome.getPessoaNome());
@@ -72,38 +76,40 @@ public class ContatosController {
         // Converte a String tipoContato para o tipo TipoContato
         TipoContato tipoContato = TipoContato.valueOf(contatoDTONome.getTipoContato().toUpperCase());
 
-        // Criar o contato e associar à pessoa
+        // Criar o tipo de contato e associar à pessoa
         Contatos novoContato = new Contatos();
         novoContato.setTipoContato(tipoContato);
         novoContato.setDescContato(contatoDTONome.getDescContato());
         novoContato.setPessoa(pessoa);
 
-        // Salvar o contato
+        // Salvar o tipo de contato
         Contatos contatoSalvo = contatosService.salvarContato(novoContato);
 
-        // Retorna o contato salvo com 200 OK
+        // Retorna o tipo de contato salvo com 200 OK
         return ResponseEntity.ok(contatoSalvo);
     }
     
+    //Retorna os dados de um tipo de contato por ID.
     @GetMapping("/api/contatos/{id}")
-    @ApiOperation(value = "Retorna os dados de um Contato por ID")
-    @Operation(summary = "Retorna os dados de um Contato por ID")
+    @ApiOperation(value = "Retorna os dados de um tipo de contato por ID")
+    @Operation(summary = "Retorna os dados de um tipo de contato por ID")
     public ResponseEntity<Contatos> obterContatoPorId(@PathVariable Long id) {
-        // Busca o contato pelo ID
+        // Busca o tipo de contato pelo ID
         Contatos contato = contatosService.obterContatoPorId1(id);
 
-        // Verifica se o contato foi encontrado
+        // Verifica se o tipo de contato foi encontrado
         if (contato == null) {
             return ResponseEntity.notFound().build();  // Retorna 404 caso não encontre o contato
         }
 
-        // Retorna o contato encontrado com 200 OK
+        // Retorna o tipo de contato encontrado com 200 OK
         return ResponseEntity.ok(contato);
     }
     
+    //Lista todos os tipos de contatos de uma pessoa pelo IDPessoa.
     @GetMapping("/pessoa/{idPessoa}")
-    @ApiOperation(value = "Lista todos os contatos de uma pessoa pelo ID")
-    @Operation(summary = "Lista todos os contatos de uma pessoa pelo ID")
+    @ApiOperation(value = "Lista todos os tipos de contatos de uma pessoa pelo ID")
+    @Operation(summary = "Lista todos os tipos de contatos de uma pessoa pelo ID")
     public ResponseEntity<List<Contatos>> listarContatosPorPessoa(@PathVariable Long idPessoa) {
         // Busca a pessoa pelo ID
         Pessoas pessoa = pessoasService.obterPessoaPorId(idPessoa);
@@ -112,25 +118,26 @@ public class ContatosController {
             return ResponseEntity.notFound().build(); // Retorna 404 se a pessoa não for encontrada
         }
 
-        // Busca todos os contatos da pessoa
+        // Busca todos os tipos de contatos da pessoa
         List<Contatos> contatos = contatosService.listarContatosPorPessoa(pessoa);
         
         if (contatos.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Retorna 204 se não houver contatos
+            return ResponseEntity.noContent().build(); // Retorna 204 se não houver tipos de contatos
         }
 
-        return ResponseEntity.ok(contatos); // Retorna os contatos com status 200
+        return ResponseEntity.ok(contatos); // Retorna os tipos de contatos com status 200
     }
     
+    //Atualiza um tipo de contato existente.
     @PutMapping("/{id}")
-    @ApiOperation(value = "Atualiza um contato existente")
-    @Operation(summary = "Atualiza um contato existente")
+    @ApiOperation(value = "Atualiza um tipo de contato existente")
+    @Operation(summary = "Atualiza um tipo de contato existente")
     public ResponseEntity<Contatos> atualizarContato(@PathVariable Long id, @RequestBody ContatoDTO contatoDTO) {
-        // Busca o contato pelo ID
+        // Busca o tipo de contato pelo ID
         Contatos contatoExistente = contatosService.obterContatoPorId1(id);
         
         if (contatoExistente == null) {
-            return ResponseEntity.notFound().build(); // Retorna 404 se o contato não for encontrado
+            return ResponseEntity.notFound().build(); // Retorna 404 se o tipo de contato não for encontrado
         }
 
         // Atualiza os campos que foram passados no DTO, se não forem nulos ou vazios
@@ -154,24 +161,25 @@ public class ContatosController {
             }
         }
 
-        // Salva o contato atualizado
+        // Salva o tipo de contato atualizado
         Contatos contatoAtualizado = contatosService.salvarContato(contatoExistente);
         
-        return ResponseEntity.ok(contatoAtualizado); // Retorna o contato atualizado com status 200 OK
+        return ResponseEntity.ok(contatoAtualizado); // Retorna o tipo de contato atualizado com status 200 OK
     }
     
+    //Remove um tipo de contato por ID.
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Remove um contato por ID")
-    @Operation(summary = "Remove um contato por ID")
+    @ApiOperation(value = "Remove um tipo de contato por ID")
+    @Operation(summary = "Remove um tipo de contato por ID")
     public ResponseEntity<Void> removerContato(@PathVariable Long id) {
-        // Verifica se o contato existe
+        // Verifica se o tipo de contato existe
         Contatos contato = contatosService.obterContatoPorId1(id);
         
         if (contato == null) {
-            return ResponseEntity.notFound().build(); // Retorna 404 se o contato não for encontrado
+            return ResponseEntity.notFound().build(); // Retorna 404 se o tipo de contato não for encontrado
         }
 
-        // Remove o contato
+        // Remove o tipo de contato
         contatosService.removerContato(id);
         
         return ResponseEntity.noContent().build(); // Retorna 204 No Content (sucesso, sem corpo na resposta)
